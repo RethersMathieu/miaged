@@ -1,0 +1,6 @@
+package com.miaged.miaged
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
