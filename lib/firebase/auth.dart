@@ -44,4 +44,8 @@ class Auth {
     User? refreshedUser = auth.currentUser;
     return refreshedUser;
   }
+
+  static Stream<User?> userChange() {
+    return FirebaseAuth.instance.userChanges();
+  }
 }
