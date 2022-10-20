@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:miaged/firebase/auth.dart';
 import 'package:miaged/validators.dart';
 
@@ -49,10 +51,19 @@ class LogIn extends StatelessWidget {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             var reponse = await Auth.signIn(email: emailTEC.text, password: passwordTEC.text);
-                            if (reponse is User) {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(builder: (context) => const Text("BONJOUR!"))
+                            if (reponse is! User) {
+                              Fluttertoast.showToast(
+                                msg: "E-mail ou mot de passe incorrect",
+                                toastLength: Toast.LENGTH_SHORT,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0,
+                                webShowClose: true,
                               );
+                            } else {
+                              Fluttertoast.cancel();
+                              GoRouter.of(context).go('/');
                             }
                           }
                         },
