@@ -1,12 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:miaged/firebase/auth.dart';
 import 'package:miaged/validators.dart';
-
-import '../firebase_options.dart';
 
 class LogIn extends StatelessWidget {
   LogIn({super.key});
