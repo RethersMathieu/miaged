@@ -1,9 +1,13 @@
 import 'dart:async';
-import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class Auth {
+
+  static final profilUser = _ProfilUser();
+
   static Future<dynamic> register({
     required String email,
     required String password,
@@ -48,4 +52,45 @@ class Auth {
   static Stream<User?> userChange() {
     return FirebaseAuth.instance.userChanges();
   }
+}
+
+class _ProfilUser {
+  Map<String, dynamic>? data;
+
+  _ProfilUser() {
+    Auth.userChange().listen((user) async {
+      print(user);
+      if (user is User) {
+        var doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        data = doc.data();
+        return;
+      }
+      data = null;
+    });
+  }
+
+  String? get lastname {
+    return data!['lastname'];
+  }
+
+  String? get firstname {
+    return data!['firstname'];
+  }
+
+  String? get adress {
+    return data!['adress'];
+  }
+
+  String? get city {
+    return data!['city'];
+  }
+
+  User? get userData {
+    return FirebaseAuth.instance.currentUser;
+  }
+
+  bool get isLogged {
+    return userData != null;
+  }
+
 }
