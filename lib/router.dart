@@ -28,7 +28,7 @@ class RouteConfig {
             routes: [
               GoRoute(
                 path: '',
-                pageBuilder: (context, state) => NoTransitionPage(child: null)
+                // pageBuilder: (context, state) => NoTransitionPage(child: null)
               ),
             ]
           )

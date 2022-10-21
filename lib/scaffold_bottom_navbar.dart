@@ -22,7 +22,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
   int get _currentIndex => _locationToTabIndex(GoRouter.of(context).location);
 
   int _locationToTabIndex(String location) {
-    final index = tabs.indexWhere((t) => location.startsWith(t.initialLocation));
+    final index = items.indexWhere((t) => location.startsWith(t.initialLocation));
     // if index not found (-1), return 0
     return index < 0 ? 0 : index;
   }
@@ -31,7 +31,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
   void _onItemTapped(BuildContext context, int tabIndex) {
     if (tabIndex != _currentIndex) {
       // go to the initial location of the selected tab (by index)
-      context.go(tabs[tabIndex].initialLocation);
+      context.go(items[tabIndex].initialLocation);
     }
   }
 
@@ -41,7 +41,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        items: tabs,
+        items: items,
         onTap: (index) => _onItemTapped(context, index),
       ),
     );
