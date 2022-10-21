@@ -7,17 +7,16 @@ import '../firebase_options.dart';
 import 'log.dart';
 
 class Home extends StatelessWidget {
-  Home({super.key});
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-
 
     return Scaffold(
       appBar: AppBar(title: const Text('Home'),),
       body: const Padding(
         padding: EdgeInsets.all(20),
+        child: Center(),
       )
     );
   }

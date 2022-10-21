@@ -9,11 +9,11 @@ class LogIn extends StatelessWidget {
   LogIn({super.key});
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController emailTEC = TextEditingController();
-  final FocusNode emailFN = FocusNode();
+  final TextEditingController _emailTEC = TextEditingController();
+  final FocusNode _emailFN = FocusNode();
 
-  final TextEditingController passwordTEC = TextEditingController();
-  final FocusNode passwordFN = FocusNode();
+  final TextEditingController _passwordTEC = TextEditingController();
+  final FocusNode _passwordFN = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -25,21 +25,37 @@ class LogIn extends StatelessWidget {
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(
-                controller: emailTEC,
-                focusNode: emailFN,
-                validator: (value) => Validators.email(email: value ?? ""),
-              ),
-              TextFormField(
-                controller: passwordTEC,
-                focusNode: passwordFN,
-                validator: (value) => Validators.password(password: value ?? ""),
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
+              Container(
+                margin: const EdgeInsets.only(bottom: 20.0),
+                child: TextFormField(
+                  controller: _emailTEC,
+                  focusNode: _emailFN,
+                  validator: (value) => Validators.email(email: value ?? ""),
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.email),
+                    labelText: 'E-mail',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 20.0),
+                margin: const EdgeInsets.only(bottom: 20.0),
+                child: TextFormField(
+                  controller: _passwordTEC,
+                  focusNode: _passwordFN,
+                  validator: (value) => Validators.password(password: value ?? ""),
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.password),
+                    labelText: 'Mot de passe',
+                    border: OutlineInputBorder(),
+                  ),
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -47,7 +63,7 @@ class LogIn extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            var reponse = await Auth.signIn(email: emailTEC.text, password: passwordTEC.text);
+                            var reponse = await Auth.signIn(email: _emailTEC.text, password: _passwordTEC.text);
                             if (reponse is! User) {
                               Fluttertoast.showToast(
                                 msg: "E-mail ou mot de passe incorrect",
@@ -59,7 +75,6 @@ class LogIn extends StatelessWidget {
                                 webShowClose: true,
                               );
                             } else {
-                              Fluttertoast.cancel();
                               GoRouter.of(context).go('/');
                             }
                           }
