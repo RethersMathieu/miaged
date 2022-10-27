@@ -28,4 +28,8 @@ class Validators {
     }
     return null;
   }
+
+  static String? required({ required String value }) {
+    return value.isEmpty ? 'Le champ est obligatoire.' : null;
+  }
 }

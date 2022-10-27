@@ -18,7 +18,7 @@ class LogIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login"),),
+      appBar: AppBar(title: const Text("Connexion")),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
@@ -64,7 +64,7 @@ class LogIn extends StatelessWidget {
                       if (states.contains(MaterialState.hovered)) return Colors.blue.withOpacity(.04);
                     })
                   ),
-                  child: const Text("Se connecter", style: TextStyle(color: Colors.white),),
+                  child: const Text("Connecter", style: TextStyle(color: Colors.white, fontSize: 16.0),),
                   onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         var reponse = await Auth.signIn(email: _emailTEC.text, password: _passwordTEC.text);
@@ -72,7 +72,7 @@ class LogIn extends StatelessWidget {
                           Fluttertoast.showToast(
                             msg: "E-mail ou mot de passe incorrect",
                             toastLength: Toast.LENGTH_SHORT,
-                            timeInSecForIosWeb: 1,
+                            timeInSecForIosWeb: 5,
                             backgroundColor: Colors.red,
                             textColor: Colors.white,
                             fontSize: 16.0,
@@ -85,11 +85,17 @@ class LogIn extends StatelessWidget {
                     },
                 ),
               ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 20.0),
+                child: TextButton(
+                  onPressed: () { GoRouter.of(context).go('/register'); },
+                  child: const Text('Créer un compte'),
+                ),
+              )
             ],
           ),
         ),
       ),
     );
   }
-
 }

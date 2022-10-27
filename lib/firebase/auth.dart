@@ -11,13 +11,25 @@ class Auth {
   static Future<dynamic> register({
     required String email,
     required String password,
+    required String adress,
+    required String city,
+    required String zipcode,
   }) async {
       FirebaseAuth auth = FirebaseAuth.instance;
       dynamic reponse;
       try {
         UserCredential userCredential = await auth.createUserWithEmailAndPassword(email: email, password: password);
-        reponse = userCredential.user;
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+              'adress': adress,
+              'city': city,
+              'zipcode': zipcode,
+            });
       } on FirebaseAuthException catch (e) {
+        reponse = e;
+      } on FirebaseException catch (e) {
         reponse = e;
       }
       return reponse;
@@ -68,12 +80,8 @@ class _ProfilUser {
     });
   }
 
-  String? get lastname {
-    return data!['lastname'];
-  }
-
-  String? get firstname {
-    return data!['firstname'];
+  String? get login {
+    return userData?.email;
   }
 
   String? get adress {
@@ -82,6 +90,10 @@ class _ProfilUser {
 
   String? get city {
     return data!['city'];
+  }
+
+  String? get zipcode {
+    return data!['zipcode'];
   }
 
   User? get userData {

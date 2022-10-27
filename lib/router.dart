@@ -7,6 +7,7 @@ import 'package:miaged/pages/home.dart';
 import 'package:miaged/pages/log.dart';
 import 'package:miaged/pages/profil.dart';
 import 'package:miaged/pages/shapping_cart.dart';
+import 'package:miaged/pages/sign_in.dart';
 import 'package:miaged/scaffold_bottom_navbar.dart';
 
 class RouteConfig {
@@ -14,6 +15,7 @@ class RouteConfig {
   static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static FutureOr<String?> redirectionToLog(BuildContext context, GoRouterState state) => !Auth.profilUser.isLogged ? '/login' : null;
+  static FutureOr<String?> redirectionToShowCase(BuildContext context, GoRouterState state) => Auth.profilUser.isLogged ? '/showcase' : null;
 
   static GoRouter instance = GoRouter(
     initialLocation: '/showcase',
@@ -50,8 +52,13 @@ class RouteConfig {
       GoRoute(
         path: '/login',
         builder: (context, state) => LogIn(),
-        redirect: (context, state) async => Auth.profilUser.isLogged ? '/showcase' : null,
-      )
+        redirect: redirectionToShowCase
+      ),
+      GoRoute(
+        path: '/register',
+        builder: (context, state) => SignIn(),
+        redirect: redirectionToShowCase
+      ),
     ]
   );
 }
