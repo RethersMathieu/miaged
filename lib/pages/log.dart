@@ -56,33 +56,33 @@ class LogIn extends StatelessWidget {
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            var reponse = await Auth.signIn(email: _emailTEC.text, password: _passwordTEC.text);
-                            if (reponse is! User) {
-                              Fluttertoast.showToast(
-                                msg: "E-mail ou mot de passe incorrect",
-                                toastLength: Toast.LENGTH_SHORT,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                                fontSize: 16.0,
-                                webShowClose: true,
-                              );
-                            } else {
-                              GoRouter.of(context).go('/showcase');
-                            }
-                          }
-                        },
-                        child: const Text("Se connecter", style: TextStyle(color: Colors.white),),
-                      ),
-                    )
-                  ],
+                child: TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                    overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                      if (states.contains(MaterialState.pressed)) return Colors.blue.withOpacity(.2);
+                      if (states.contains(MaterialState.hovered)) return Colors.blue.withOpacity(.04);
+                    })
+                  ),
+                  child: const Text("Se connecter", style: TextStyle(color: Colors.white),),
+                  onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        var reponse = await Auth.signIn(email: _emailTEC.text, password: _passwordTEC.text);
+                        if (reponse is! User) {
+                          Fluttertoast.showToast(
+                            msg: "E-mail ou mot de passe incorrect",
+                            toastLength: Toast.LENGTH_SHORT,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                            webShowClose: true,
+                          );
+                        } else {
+                          GoRouter.of(context).go('/showcase');
+                        }
+                      }
+                    },
                 ),
               ),
             ],
