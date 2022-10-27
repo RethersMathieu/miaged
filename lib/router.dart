@@ -23,7 +23,7 @@ class RouteConfig {
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) => ScaffoldWithBottomNavBar(
           items: const [
-            ScaffoldWithNavBarTabItem(initialLocation: '/showcase', icon: Icon(Icons.store), label: 'Vitrine'),
+            ScaffoldWithNavBarTabItem(initialLocation: '/showcase', icon: Icon(Icons.store), label: 'Acheter'),
             ScaffoldWithNavBarTabItem(initialLocation: '/shapping_cart', icon: Icon(Icons.shopping_basket), label: 'Panier'),
             ScaffoldWithNavBarTabItem(initialLocation: '/profil', icon: Icon(Icons.person), label: 'Profile')
           ],

@@ -1,23 +1,22 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:miaged/firebase/auth.dart';
 
-import '../firebase_options.dart';
-import 'log.dart';
-
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<StatefulWidget> createState() => _HomeState();
+}
 
+class _HomeState extends State<Home> {
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home'),),
+      appBar: AppBar(title: const Text('Acheter')),
       body: const Padding(
         padding: EdgeInsets.all(20),
         child: Center(),
-      )
+      ),
     );
   }
 }
