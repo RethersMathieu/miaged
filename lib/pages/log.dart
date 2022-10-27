@@ -75,7 +75,7 @@ class LogIn extends StatelessWidget {
                                 webShowClose: true,
                               );
                             } else {
-                              GoRouter.of(context).go('/');
+                              GoRouter.of(context).go('/showcase');
                             }
                           }
                         },

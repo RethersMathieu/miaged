@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'MIAGED',
-      routerConfig: RouteConfig.instance,
+      routerConfig: RouteConfig.i,
     );
   }
 }

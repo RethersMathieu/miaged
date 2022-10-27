@@ -59,7 +59,6 @@ class _ProfilUser {
 
   _ProfilUser() {
     Auth.userChange().listen((user) async {
-      print(user);
       if (user is User) {
         var doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
         data = doc.data();
