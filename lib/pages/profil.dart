@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:miaged/firebase/auth.dart';
 
@@ -20,7 +19,6 @@ class TextFieldMiaged {
     textFormField = TextFormField(
       controller: controller,
       focusNode: focusNode,
-      initialValue: value,
       enabled: !disabled!,
       validator: (value) {
         if (validators == null) return null;
@@ -37,6 +35,7 @@ class TextFieldMiaged {
         border: const OutlineInputBorder(),
       ),
     );
+    if (value != null) controller.text = value;
   }
 }
 
@@ -54,10 +53,12 @@ class Profil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      appBar: AppBar(title: const Text('Profile'),),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            ...textFields.map((e) => Container(margin: const EdgeInsets.only(bottom: 10), child: e.textFormField,)).toList(),
+            ...textFields.map((e) => Container(margin: const EdgeInsets.only(bottom: 20), child: e.textFormField)).toList(),
           ],
         ),
       ),

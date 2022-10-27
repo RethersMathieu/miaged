@@ -7,7 +7,6 @@ import 'package:miaged/pages/home.dart';
 import 'package:miaged/pages/log.dart';
 import 'package:miaged/pages/profil.dart';
 import 'package:miaged/pages/shapping_cart.dart';
-import 'package:miaged/pages/showcase.dart';
 import 'package:miaged/scaffold_bottom_navbar.dart';
 
 class RouteConfig {
@@ -16,7 +15,7 @@ class RouteConfig {
 
   static FutureOr<String?> redirectionToLog(BuildContext context, GoRouterState state) => !Auth.profilUser.isLogged ? '/login' : null;
 
-  static GoRouter i = GoRouter(
+  static GoRouter instance = GoRouter(
     initialLocation: '/showcase',
     navigatorKey: _rootNavigatorKey,
     routes: [
@@ -55,44 +54,4 @@ class RouteConfig {
       )
     ]
   );
-
-  static GoRouter instance = GoRouter(routes: <GoRoute>[
-    GoRoute(
-        path: '/',
-        builder: (context, state) => const Home(),
-        redirect: (context, state) async => !Auth.profilUser.isLogged ? '/login' : null,
-        routes: [
-          ShellRoute(
-            navigatorKey: _shellNavigatorKey,
-            builder: (context, state, child) => ScaffoldWithBottomNavBar(
-                items: const [
-                  ScaffoldWithNavBarTabItem(initialLocation: '/showcase', icon: Icon(Icons.store), label: 'Vitrine'),
-                  ScaffoldWithNavBarTabItem(initialLocation: '/shapping_cart', icon: Icon(Icons.shopping_basket), label: 'Panier'),
-                  ScaffoldWithNavBarTabItem(initialLocation: '/profil', icon: Icon(Icons.person), label: 'Profile')
-                ],
-                child: child
-            ),
-            routes: [
-              GoRoute(
-                path: 'showcase',
-                builder: (context, state) => const Showcase(),
-              ),
-              GoRoute(
-                path: 'shapping_cart',
-                builder: (context, state) => const ShappingCart()
-              ),
-              GoRoute(
-                  path: 'profil',
-                  builder: (context, state) => Profil()
-              )
-            ]
-          )
-        ]
-    ),
-    GoRoute(
-        path: '/login',
-        builder: (context, state) => LogIn(),
-        redirect: (context, state) async => Auth.profilUser.isLogged ? '/' : null,
-    )
-  ]);
 }
