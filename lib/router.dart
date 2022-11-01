@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:miaged/firebase/auth.dart';
-import 'package:miaged/pages/home.dart';
 import 'package:miaged/pages/log.dart';
 import 'package:miaged/pages/profil.dart';
 import 'package:miaged/pages/shapping_cart.dart';
+import 'package:miaged/pages/showcase.dart';
 import 'package:miaged/pages/sign_in.dart';
 import 'package:miaged/scaffold_bottom_navbar.dart';
 
@@ -34,7 +34,7 @@ class RouteConfig {
         routes: [
           GoRoute(
             path: '/showcase',
-            pageBuilder: (context, state) => const NoTransitionPage(child: Home()),
+            pageBuilder: (context, state) => const NoTransitionPage(child: Showcase()),
             redirect: redirectionToLog
           ),
           GoRoute(

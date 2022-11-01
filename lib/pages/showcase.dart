@@ -19,51 +19,86 @@ class _ShowcaseState extends State<Showcase> {
   }
 
   Widget _initGridViewClothes(List<Clothe> clothes) {
-    return GridView.builder(
-      itemCount: clothes.length,
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      primary: false,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-      itemBuilder: (context, index) {
-        var clothe = clothes[index];
-        return Center(
-          child: Card(
-            child: Container(
-              height: 300,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                image: DecorationImage(
-                  image: NetworkImage(clothe.img),
-                  fit: BoxFit.cover,
-                )
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text('${clothe.name[0].toUpperCase()}${clothe.name.substring(1).toLowerCase()}'),
+      return GridView.builder(
+        itemCount: clothes.length,
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        primary: false,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (context, index) {
+          var clothe = clothes[index];
+          return GestureDetector(
+            onTap: (){
+
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Container(
+                width: (MediaQuery.of(context).size.width/2)-15,
+                height: 150,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: const BorderRadius.all(Radius.circular(0.0)),
+                  image: DecorationImage(
+                    image: NetworkImage(clothe.img),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child:  Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      gradient: LinearGradient(
+                          colors: [Colors.black, Color(0x19000000)],
+                          begin: FractionalOffset(0.0, 1.0),
+                          end: FractionalOffset(0.0, 0.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '${clothe.name[0].toUpperCase()}${clothe.name.substring(1).toLowerCase()}',
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500,color: Colors.white),
+                          ),
+                          Text(
+                            '${clothe.price.toStringAsFixed(2)}€',
+                            style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w200,
+                                color: Colors.white
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ), /* add child content here */
               ),
             ),
-          ),
-        )
-      },
-    );
+          );
+        },
+      );
   }
 
   StreamBuilder<QuerySnapshot> _initStream() {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('clothes').withConverter<Clothe>(
-          fromFirestore: (snapshot, _) => Clothe.fromJson(snapshot.data()!),
-          toFirestore: (clothe, _) => clothe.toJson(),
-      ).snapshots(),
+      stream: FirebaseFirestore.instance.collection('clothes').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) return Text('Erreur lors du chargement des vetements : ${snapshot.error}');
-        switch (snapshot.connectionState) {
-          case ConnectionState.none: return const Text('Non connecté à la base de donnée.');
-          case ConnectionState.waiting: return _initSpinner();
-          case ConnectionState.done:
-            return
+        else if (snapshot.connectionState == ConnectionState.none) return const Text('Non connecté à la base de donnée.');
+        else if (snapshot.connectionState == ConnectionState.waiting) return _initSpinner();
+        if (snapshot.hasData) {
+          var clothes = snapshot.data!.docs.map((e) => Clothe.fromJson(e.id, e.data() as Map<String, dynamic>)).toList();
+          return _initGridViewClothes(clothes);
         }
+        return const Text("Aucun vêtements disponible");
       },
     );
   }
@@ -74,6 +109,7 @@ class _ShowcaseState extends State<Showcase> {
       appBar: AppBar(title: const Text('Acheter')),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
+        child: _initStream(),
       ),
     );
   }
