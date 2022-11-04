@@ -28,9 +28,7 @@ class _ShowcaseState extends State<Showcase> {
         itemBuilder: (context, index) {
           var clothe = clothes[index];
           return GestureDetector(
-            onTap: (){
-
-            },
+            onTap: () => print('Clothe ${clothe.id} tapped.'),
             child: Padding(
               padding: const EdgeInsets.all(5),
               child: Container(

@@ -74,6 +74,9 @@ class _ProfilUser {
       if (user is User) {
         var doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
         data = doc.data();
+        if (data != null) {
+          (data!['shapping_cart'] as DocumentReference<Map<String, dynamic>>).get().then((value) => print(value['total_price']));
+        }
         return;
       }
       data = null;
