@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:miaged/clothe.dart';
+import 'package:miaged/models/clothe.dart';
 
 class Showcase extends StatefulWidget {
   const Showcase({ super.key });

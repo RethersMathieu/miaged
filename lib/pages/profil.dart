@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:miaged/firebase/auth.dart';
 
-import '../text_field_miaged.dart';
+import '../models/text_field_miaged.dart';
 
 class Profil extends StatelessWidget {
   Profil({super.key});

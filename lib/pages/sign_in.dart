@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../firebase/auth.dart';
-import '../text_field_miaged.dart';
-import '../validators.dart';
+import '../models/text_field_miaged.dart';
+import '../models/validators.dart';
 
 class SignIn extends StatelessWidget {
   SignIn({super.key});

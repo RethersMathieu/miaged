@@ -5,9 +5,7 @@ class Clothe {
   String size;
   double price;
 
-  Clothe({ required this.id, required this.img, required this.name, required this.size, required this.price}) {
-    print("Clothe[${id}]");
-  }
+  Clothe({ required this.id, required this.img, required this.name, required this.size, required this.price});
 
   Clothe.fromJson(String id, Map<String, Object?> json): this(
     id: id,
