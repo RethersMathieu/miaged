@@ -23,4 +23,9 @@ class Clothe {
       'price': price,
     };
   }
+
+  @override
+  String toString() {
+    return 'Clothe(${id}, ${img}, ${name}, ${size}, ${price})';
+  }
 }
