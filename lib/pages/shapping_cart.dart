@@ -103,6 +103,7 @@ class _SappingCartState extends State<ShappingCart> {
         else if (snapshot.connectionState == ConnectionState.waiting) return _initSpinner();
         if (snapshot.hasData) {
           var docRefClothes = snapshot.data!.data()!['clothes'];
+          if (docRefClothes.length <= 0) return const Text("Panier vide");
           return _initGridView(docRefClothes);
         }
         return const Text("Panier vide");

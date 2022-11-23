@@ -16,16 +16,18 @@ class Auth {
     required String zipcode,
   }) async {
       FirebaseAuth auth = FirebaseAuth.instance;
+      FirebaseFirestore store = FirebaseFirestore.instance;
       dynamic reponse;
       try {
+        var doc = await store.collection('panier').add({ 'clothes': [] });
         UserCredential userCredential = await auth.createUserWithEmailAndPassword(email: email, password: password);
-        await FirebaseFirestore.instance
-            .collection('users')
+        await store.collection('users')
             .doc(userCredential.user!.uid)
             .set({
               'adress': adress,
               'city': city,
               'zipcode': zipcode,
+              'shapping_cart': doc.id,
             });
       } on FirebaseAuthException catch (e) {
         reponse = e;

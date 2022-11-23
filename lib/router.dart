@@ -35,7 +35,10 @@ class RouteConfig {
           GoRoute(
             path: '/showcase',
             pageBuilder: (context, state) => const NoTransitionPage(child: Showcase()),
-            redirect: redirectionToLog
+            redirect: redirectionToLog,
+            routes: [
+
+            ]
           ),
           GoRoute(
               path: '/shapping_cart',
