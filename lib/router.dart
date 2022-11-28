@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:miaged/firebase/auth.dart';
+import 'package:miaged/pages/clothe_detail.dart';
 import 'package:miaged/pages/log.dart';
 import 'package:miaged/pages/profil.dart';
 import 'package:miaged/pages/shapping_cart.dart';
@@ -37,13 +38,22 @@ class RouteConfig {
             pageBuilder: (context, state) => const NoTransitionPage(child: Showcase()),
             redirect: redirectionToLog,
             routes: [
-
+              GoRoute(
+                path: 'clothe/:id',
+                builder: (context, state) => ClotheDetail(id: state.params['id'] ?? ''),
+              )
             ]
           ),
           GoRoute(
               path: '/shapping_cart',
               pageBuilder: (context, state) => const NoTransitionPage(child: ShappingCart()),
-              redirect: redirectionToLog
+              redirect: redirectionToLog,
+              routes: [
+                GoRoute(
+                  path: 'clothe/:id',
+                  builder: (context, state) => ClotheDetail(id: state.params['id'] ?? ''),
+                )
+              ]
           ),
           GoRoute(
               path: '/profil',

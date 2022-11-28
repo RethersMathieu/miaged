@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:miaged/firebase/auth.dart';
 
 import '../models/clothe.dart';
@@ -20,6 +21,87 @@ class _SappingCartState extends State<ShappingCart> {
     );
   }
 
+  Widget _initCardEmpty() {
+    return GestureDetector(
+      child: Padding(
+        padding: const EdgeInsets.all(5),
+        child: Container(
+          width: (MediaQuery.of(context).size.width/2)-15,
+          height: 150,
+          decoration: const BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.all(Radius.circular(0.0)),
+            gradient: LinearGradient(
+                colors: [Colors.black, Color(0x19000000)],
+                begin: FractionalOffset(0.0, 1.0),
+                end: FractionalOffset(0.0, 0.0),
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp
+            ),
+          )
+        ),
+      ),
+    );
+  }
+
+  Widget _initCardClothe(Clothe clothe) {
+    return GestureDetector(
+      onTap: () => GoRouter.of(context).go('/shapping_cart/clothe/${clothe.id}'),
+      child: Padding(
+        padding: const EdgeInsets.all(5),
+        child: Container(
+          width: (MediaQuery.of(context).size.width/2)-15,
+          height: 150,
+          constraints: const BoxConstraints(minWidth: 100, maxWidth: 200),
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: const BorderRadius.all(Radius.circular(0.0)),
+            image: DecorationImage(
+              image: NetworkImage(clothe.img),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child:  Padding(
+            padding: const EdgeInsets.all(0),
+            child: Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.rectangle,
+                gradient: LinearGradient(
+                    colors: [Colors.black, Color(0x19000000)],
+                    begin: FractionalOffset(0.0, 1.0),
+                    end: FractionalOffset(0.0, 0.0),
+                    stops: [0.0, 1.0],
+                    tileMode: TileMode.clamp
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${clothe.name[0].toUpperCase()}${clothe.name.substring(1).toLowerCase()}',
+                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500,color: Colors.white),
+                    ),
+                    Text(
+                      '${clothe.price.toStringAsFixed(2)}€',
+                      style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w200,
+                          color: Colors.white
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ), /* add child content here */
+        ),
+      ),
+    );
+  }
+
   Widget _initGridView(List<dynamic> docRefClothes) {
     return GridView.builder(
         itemCount: docRefClothes.length,
@@ -32,62 +114,11 @@ class _SappingCartState extends State<ShappingCart> {
           return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
             stream: docRefClothe.snapshots(),
             builder: (BuildContext ctx, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-              var doc = snapshot.data!;
-              var clothe = Clothe.fromJson(doc.id, doc.data()!);
-              return GestureDetector(
-                onTap: () => print('Clothe ${clothe.id} tapped.'),
-                child: Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Container(
-                    width: (MediaQuery.of(context).size.width/2)-15,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: const BorderRadius.all(Radius.circular(0.0)),
-                      image: DecorationImage(
-                        image: NetworkImage(clothe.img),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child:  Padding(
-                      padding: const EdgeInsets.all(0),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          gradient: LinearGradient(
-                              colors: [Colors.black, Color(0x19000000)],
-                              begin: FractionalOffset(0.0, 1.0),
-                              end: FractionalOffset(0.0, 0.0),
-                              stops: [0.0, 1.0],
-                              tileMode: TileMode.clamp
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                '${clothe.name[0].toUpperCase()}${clothe.name.substring(1).toLowerCase()}',
-                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500,color: Colors.white),
-                              ),
-                              Text(
-                                '${clothe.price.toStringAsFixed(2)}€',
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w200,
-                                    color: Colors.white
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ), /* add child content here */
-                  ),
-                ),
-              );
+              if (snapshot.hasData) {
+                var doc = snapshot.data!;
+                return _initCardClothe(Clothe.fromJson(doc.id, doc.data()!));
+              }
+              return _initCardEmpty();
             },
           );
         }

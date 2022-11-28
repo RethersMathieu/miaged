@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:miaged/models/clothe.dart';
 
 class Showcase extends StatefulWidget {
@@ -28,7 +29,7 @@ class _ShowcaseState extends State<Showcase> {
         itemBuilder: (context, index) {
           var clothe = clothes[index];
           return GestureDetector(
-            onTap: () => print('Clothe ${clothe.id} tapped.'),
+            onTap: () => GoRouter.of(context).go('/showcase/clothe/${clothe.id}'),
             child: Padding(
               padding: const EdgeInsets.all(5),
               child: Container(

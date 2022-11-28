@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'MIAGED',
       routerConfig: RouteConfig.instance,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
