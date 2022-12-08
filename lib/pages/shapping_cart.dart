@@ -50,9 +50,8 @@ class _SappingCartState extends State<ShappingCart> {
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: Container(
-          width: (MediaQuery.of(context).size.width/2)-15,
           height: 150,
-          constraints: const BoxConstraints(minWidth: 100, maxWidth: 200),
+          constraints: const BoxConstraints(minWidth: 100, maxWidth: 200, maxHeight: 150),
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             borderRadius: const BorderRadius.all(Radius.circular(0.0)),
@@ -82,6 +81,7 @@ class _SappingCartState extends State<ShappingCart> {
                   children: [
                     Text(
                       '${clothe.name[0].toUpperCase()}${clothe.name.substring(1).toLowerCase()}',
+                      maxLines: 2,
                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500,color: Colors.white),
                     ),
                     Text(
@@ -127,15 +127,31 @@ class _SappingCartState extends State<ShappingCart> {
 
   StreamBuilder<DocumentSnapshot<Map<String, dynamic>>> _initStream() {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('shapping_carts').doc(Auth.profilUser.shapping_cart).snapshots(),
+      stream: Auth.profilUser!.shapping_cart_ref.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
         if (snapshot.hasError) return Text('Erreur lors du panier : ${snapshot.error}');
         else if (snapshot.connectionState == ConnectionState.none) return const Text('Non connecté à la base de donnée.');
         else if (snapshot.connectionState == ConnectionState.waiting) return _initSpinner();
         if (snapshot.hasData) {
           var docRefClothes = snapshot.data!.data()!['clothes'];
+          var priceTotal = snapshot.data!.data()!['total'] as double;
           if (docRefClothes.length <= 0) return const Text("Panier vide");
-          return _initGridView(docRefClothes);
+          return Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 2.5),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.black, width: 1.0)
+                  )
+                ),
+                child: Center(
+                  child: Text('Total : ${priceTotal.toStringAsFixed(2)}€'),
+                ),
+              ),
+              _initGridView(docRefClothes),
+            ],
+          );
         }
         return const Text("Panier vide");
       },

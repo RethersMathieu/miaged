@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/profile.dart';
+
 
 class Auth {
 
-  static final profilUser = _ProfilUser();
+  static ProfilUser? profilUser;
 
   static Future<dynamic> register({
     required String email,
@@ -19,7 +21,7 @@ class Auth {
       FirebaseFirestore store = FirebaseFirestore.instance;
       dynamic reponse;
       try {
-        var doc = await store.collection('panier').add({ 'clothes': [] });
+        var doc = await store.collection('panier').add({ 'clothes': [], 'total': 0 });
         UserCredential userCredential = await auth.createUserWithEmailAndPassword(email: email, password: password);
         await store.collection('users')
             .doc(userCredential.user!.uid)
@@ -27,7 +29,7 @@ class Auth {
               'adress': adress,
               'city': city,
               'zipcode': zipcode,
-              'shapping_cart': doc.id,
+              'shapping_cart': doc,
             });
       } on FirebaseAuthException catch (e) {
         reponse = e;
@@ -66,48 +68,4 @@ class Auth {
   static Stream<User?> userChange() {
     return FirebaseAuth.instance.userChanges();
   }
-}
-
-class _ProfilUser {
-  Map<String, dynamic>? data;
-
-  _ProfilUser() {
-    Auth.userChange().listen((user) async {
-      if (user is User) {
-        var doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-        data = doc.data();
-        return;
-      }
-      data = null;
-    });
-  }
-
-  String? get login {
-    return userData?.email;
-  }
-
-  String? get adress {
-    return data!['adress'];
-  }
-
-  String? get city {
-    return data!['city'];
-  }
-
-  String? get zipcode {
-    return data!['zipcode'];
-  }
-
-  String? get shapping_cart {
-    return data!['shapping_cart'];
-  }
-
-  User? get userData {
-    return FirebaseAuth.instance.currentUser;
-  }
-
-  bool get isLogged {
-    return userData != null;
-  }
-
 }

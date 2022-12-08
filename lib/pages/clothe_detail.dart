@@ -1,10 +1,9 @@
-import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:miaged/components/CartBadge.dart';
 
-import '../firebase/auth.dart';
 import '../models/clothe.dart';
 
 class ClotheDetail extends StatelessWidget {
@@ -39,26 +38,7 @@ class ClotheDetail extends StatelessWidget {
                           onPressed: () => context.pop(),
                           icon: const Icon(Icons.arrow_back, color: Colors.black)
                       ),
-                      StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                        stream: FirebaseFirestore.instance.collection('shapping_carts').doc(Auth.profilUser.shapping_cart).snapshots(),
-                        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-                          if (snapshot.hasData) {
-                            var docRefClothes = snapshot.data!.data()!['clothes'];
-                            return Badge(
-                                position: const BadgePosition(end: 1.0, top: 1.0),
-                                badgeContent: Text('${docRefClothes.length}'),
-                                child: IconButton(
-                                    onPressed: () => GoRouter.of(context).go('/shapping_cart'),
-                                    icon: const Icon(Icons.shopping_basket, color: Colors.black)
-                                )
-                            );
-                          }
-                          return IconButton(
-                              onPressed: () => GoRouter.of(context).go('/shapping_cart'),
-                              icon: const Icon(Icons.shopping_basket, color: Colors.black)
-                          );
-                        },
-                      )
+                      const CartBadge(),
                     ],
                   ),
                 )

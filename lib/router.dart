@@ -15,8 +15,8 @@ class RouteConfig {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
   static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
-  static FutureOr<String?> redirectionToLog(BuildContext context, GoRouterState state) => !Auth.profilUser.isLogged ? '/login' : null;
-  static FutureOr<String?> redirectionToShowCase(BuildContext context, GoRouterState state) => Auth.profilUser.isLogged ? '/showcase' : null;
+  static FutureOr<String?> redirectionToLog(BuildContext context, GoRouterState state) => Auth.profilUser == null ? '/login' : null;
+  static FutureOr<String?> redirectionToShowCase(BuildContext context, GoRouterState state) => Auth.profilUser != null ? '/showcase' : null;
 
   static GoRouter instance = GoRouter(
     initialLocation: '/showcase',
