@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase/auth.dart';
 import 'firebase_options.dart';
-import 'models/profile.dart';
+import 'models/profile_user.dart';
 import 'router.dart';
 
 Future<void> main() async {

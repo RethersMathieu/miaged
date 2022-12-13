@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:miaged/firebase/auth.dart';
 
 import '../models/text_field_miaged.dart';
 
 class Profil extends StatelessWidget {
   Profil({super.key});
+
   final textFields = [
     TextFieldMiaged(label: 'Login', disabled: true, value: Auth.profilUser?.login),
     TextFieldMiaged(label: 'Mot de passe', disabled: true, value: '.'*10),
@@ -22,6 +24,19 @@ class Profil extends StatelessWidget {
         child: Column(
           children: [
             ...textFields.map((e) => Container(margin: const EdgeInsets.only(bottom: 20), child: e.textFormField)).toList(),
+            TextButton(
+              onPressed: () async {
+                await Auth.signOut();
+                GoRouter.of(context).go('/login');
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red[600])
+              ),
+              child: const Text(
+                "Se déconnecter",
+                style: TextStyle(color: Colors.white),
+              ),
+            )
           ],
         ),
       ),

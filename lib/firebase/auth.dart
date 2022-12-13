@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../models/profile.dart';
+import '../models/profile_user.dart';
 
 
 class Auth {
