@@ -48,6 +48,10 @@ class Auth {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
       reponse = userCredential.user;
+      if (reponse is User) {
+        var doc = await FirebaseFirestore.instance.collection('users').doc(reponse.uid).get();
+        if (doc.data() != null) Auth.profilUser = ProfilUser.fromJSON(doc.data()!);
+      } else Auth.profilUser = null;
     } on FirebaseAuthException catch (e) {
       reponse = e;
     }
