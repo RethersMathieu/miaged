@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:miaged/components/card_clothe.dart';
 import 'package:miaged/models/clothe.dart';
 
 class Showcase extends StatefulWidget {
@@ -28,59 +29,9 @@ class _ShowcaseState extends State<Showcase> {
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (context, index) {
           var clothe = clothes[index];
-          return GestureDetector(
-            onTap: () => GoRouter.of(context).go('/showcase/clothe/${clothe.id}'),
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: Container(
-                width: (MediaQuery.of(context).size.width/2)-15,
-                height: 150,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: const BorderRadius.all(Radius.circular(0.0)),
-                  image: DecorationImage(
-                    image: NetworkImage(clothe.img),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child:  Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      gradient: LinearGradient(
-                          colors: [Colors.black, Color(0x19000000)],
-                          begin: FractionalOffset(0.0, 1.0),
-                          end: FractionalOffset(0.0, 0.0),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            '${clothe.name[0].toUpperCase()}${clothe.name.substring(1).toLowerCase()}',
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500,color: Colors.white),
-                          ),
-                          Text(
-                            '${clothe.price.toStringAsFixed(2)}€',
-                            style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.white
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ), /* add child content here */
-              ),
-            ),
+          return CardClothe(
+            clothe: clothe,
+            onTap: (clothe) => GoRouter.of(context).go('/showcase/clothe/${clothe!.id}'),
           );
         },
       );
