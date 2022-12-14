@@ -21,7 +21,7 @@ class Auth {
       FirebaseFirestore store = FirebaseFirestore.instance;
       dynamic reponse;
       try {
-        var doc = await store.collection('panier').add({ 'clothes': [], 'total': 0 });
+        var doc = await store.collection('shapping_carts').add({ 'clothes': [], 'total': 0 });
         UserCredential userCredential = await auth.createUserWithEmailAndPassword(email: email, password: password);
         await store.collection('users')
             .doc(userCredential.user!.uid)

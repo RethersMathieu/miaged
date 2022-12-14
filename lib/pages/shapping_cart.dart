@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:miaged/firebase/auth.dart';
+import 'package:miaged/firebase/cart_service.dart';
 
 import '../components/card_clothe.dart';
 import '../models/clothe.dart';
@@ -38,6 +39,12 @@ class _SappingCartState extends State<ShappingCart> {
               return CardClothe(
                 clothe: doc != null ? Clothe.fromJson(doc.id, doc.data()!) : null,
                 onTap: (clothe) => clothe != null ? GoRouter.of(context).go('/showcase/clothe/${clothe.id}') : null,
+                onCross: (clothe) async {
+                  var sucess = await CartService.removeClothe(clothe);
+                  if (sucess) {
+
+                  }
+                },
               );
             },
           );

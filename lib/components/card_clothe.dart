@@ -6,7 +6,8 @@ import '../models/clothe.dart';
 class CardClothe extends StatefulWidget {
   Clothe? clothe;
   void Function(Clothe? clothe)? onTap;
-  CardClothe({ required this.clothe, this.onTap });
+  void Function(Clothe clothe)? onCross;
+  CardClothe({ required this.clothe, this.onTap, this.onCross });
 
   @override
   State<StatefulWidget> createState() => _CardClotheState();
@@ -45,27 +46,56 @@ class _CardClotheState extends State<CardClothe> {
                     tileMode: TileMode.clamp
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      '${widget.clothe!.name[0].toUpperCase()}${widget.clothe!.name.substring(1).toLowerCase()}',
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500,color: Colors.white),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(2.5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(),
+                        if (widget.onCross != null) ClipOval(
+                          child: Material(
+                            color: Colors.white, // Button color
+                            child: InkWell(
+                              splashColor: Colors.red, // Splash color
+                              onTap: () => widget.onCross!(widget.clothe!),
+                              child: const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: Icon(Icons.close_sharp, color: Colors.black, size: 10.0,)
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    Text(
-                      '${widget.clothe!.price.toStringAsFixed(2)}€',
-                      style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w200,
-                          color: Colors.white
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          '${widget.clothe!.name[0].toUpperCase()}${widget.clothe!.name.substring(1).toLowerCase()}',
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500,color: Colors.white),
+                          maxLines: 1,
+                        ),
+                        Text(
+                          '${widget.clothe!.price.toStringAsFixed(2)}€',
+                          style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w200,
+                              color: Colors.white
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                ],
+              )
             ),
           ), /* add child content here */
         ),
