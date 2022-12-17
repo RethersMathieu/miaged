@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:miaged/firebase/auth.dart';
+import 'package:miaged/services/auth.dart';
 
 import '../models/text_field_miaged.dart';
 

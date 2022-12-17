@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:miaged/firebase/auth.dart';
-import 'package:miaged/firebase/cart_service.dart';
+import 'package:miaged/services/auth.dart';
+import 'package:miaged/services/cart_service.dart';
 
 import '../components/card_clothe.dart';
 import '../models/clothe.dart';

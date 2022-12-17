@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../firebase/auth.dart';
+import '../services/auth.dart';
 import '../models/text_field_miaged.dart';
 import '../models/validators.dart';
 

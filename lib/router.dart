@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:miaged/firebase/auth.dart';
+import 'package:miaged/services/auth.dart';
 import 'package:miaged/pages/clothe_detail.dart';
 import 'package:miaged/pages/log.dart';
 import 'package:miaged/pages/profil.dart';

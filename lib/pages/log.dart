@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
-import 'package:miaged/firebase/auth.dart';
+import 'package:miaged/services/auth.dart';
 import 'package:miaged/models/validators.dart';
 
 class LogIn extends StatefulWidget {
