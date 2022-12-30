@@ -18,7 +18,7 @@ class DropdownCategoriesState extends State<DropdownCategories> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Category>>(
-      future: CategoryService.instance.future_categories,
+      future: CategoryService.instance.futureCategories,
       builder: (BuildContext streamContext, AsyncSnapshot<List<Category>> snapshot) {
         var categories = snapshot.data ?? [];
         return Container(

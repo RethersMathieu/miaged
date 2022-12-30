@@ -5,12 +5,12 @@ class CategoryService {
   static final instance = CategoryService._();
 
 
-  final stream_categories = FirebaseFirestore.instance
+  final streamCategories = FirebaseFirestore.instance
       .collection("categories")
       .snapshots()
       .map((event) => event.docs.map((e) => Category.fromQueryDocument(e)).toList());
 
-  final future_categories = FirebaseFirestore.instance
+  final futureCategories = FirebaseFirestore.instance
     .collection("categories")
     .get()
     .then((value) => value.docs)
