@@ -7,9 +7,10 @@ class ScaffoldWithNavBarTabItem extends BottomNavigationBarItem {
 }
 
 class ScaffoldWithBottomNavBar extends StatefulWidget {
-  const ScaffoldWithBottomNavBar({super.key, required this.child, required this.items});
   final Widget child;
   final List<ScaffoldWithNavBarTabItem> items;
+
+  const ScaffoldWithBottomNavBar({super.key, required this.child, required this.items});
 
   @override
   State<ScaffoldWithBottomNavBar> createState() => _ScaffoldWithBottomNavBarState();

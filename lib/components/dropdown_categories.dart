@@ -4,9 +4,6 @@ import 'package:miaged/services/category_service.dart';
 import '../models/category.dart';
 
 class DropdownCategories extends StatefulWidget {
-
-  List<Category> categories = [];
-  Category? category;
   void Function(Category? category)? onChange;
 
   DropdownCategories({super.key, this.onChange});
@@ -16,41 +13,37 @@ class DropdownCategories extends StatefulWidget {
 }
 
 class DropdownCategoriesState extends State<DropdownCategories> {
-
-  DropdownCategoriesState() {
-    CategoryService.instance.stream_categories.listen((event) {
-      setState(() {
-        widget.categories = event;
-        if (widget.categories.isNotEmpty && widget.category == null) {
-          if (widget.onChange != null) widget.onChange!(widget.category);
-        }
-      });
-    });
-  }
+  Category? category;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5.0),
-      child: DropdownButtonFormField<Category>(
-        value: widget.category,
-        items: widget.categories.map((category) {
-          final name = category.name;
-          return DropdownMenuItem(
+    return FutureBuilder<List<Category>>(
+      future: CategoryService.instance.future_categories,
+      builder: (BuildContext streamContext, AsyncSnapshot<List<Category>> snapshot) {
+        var categories = snapshot.data ?? [];
+        return Container(
+          padding: const EdgeInsets.all(5.0),
+          child: DropdownButtonFormField<Category>(
             value: category,
-            child: Text("${name[0].toUpperCase()}${name.substring(1).toLowerCase()}"),
-          );
-        }).toList(),
-        onChanged: (value) {
-          if (widget.onChange != null) widget.onChange!(value);
-          setState(() => widget.category = value);
-        },
-        validator: (value) => Validators.required(value?.name ?? ""),
-        decoration: const InputDecoration(
-            prefixIcon: Icon(Icons.category),
-            border: OutlineInputBorder()
-        ),
-      ),
+            items: categories.map((category) {
+              final name = category.name;
+              return DropdownMenuItem(
+                value: category,
+                child: Text("${name[0].toUpperCase()}${name.substring(1).toLowerCase()}"),
+              );
+            }).toList(),
+            onChanged: (value) {
+              if (widget.onChange != null) widget.onChange!(value);
+              setState(() => category = value);
+            },
+            validator: (value) => Validators.required(value?.name ?? ""),
+            decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.category),
+                border: OutlineInputBorder()
+            ),
+          ),
+        );
+      }
     );
   }
 
