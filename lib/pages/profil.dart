@@ -7,7 +7,7 @@ import '../models/text_field_miaged.dart';
 class Profil extends StatelessWidget {
   Profil({super.key});
 
-  final textFields = [
+  final _textFields = [
     TextFieldMiaged(label: 'Login', disabled: true, value: Auth.profilUser?.login),
     TextFieldMiaged(label: 'Mot de passe', disabled: true, value: '.'*10),
     TextFieldMiaged(label: 'Adresse', disabled: true, value: Auth.profilUser?.adress),
@@ -23,16 +23,57 @@ class Profil extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            ...textFields.map((e) => Container(margin: const EdgeInsets.only(bottom: 20), child: e.textFormField)).toList(),
-            TextButton(
+            ..._textFields.map((e) => Container(margin: const EdgeInsets.only(bottom: 20), child: e.textFormField)).toList(),
+            Container(
+              margin: const EdgeInsets.only(bottom: 20),
+              child: TextButton.icon(
+                onPressed: () => GoRouter.of(context).go("/profil/add"),
+                icon: const Icon(Icons.add_circle_outline, color: Colors.white),
+                label: const Text("Ajouter  vêtement", style: TextStyle(color: Colors.white)),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                  foregroundColor: MaterialStateProperty.all(Colors.blue),
+                  padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
+                ),
+              ),
+            ),
+            TextButton.icon(
               onPressed: () async {
-                await Auth.signOut();
-                GoRouter.of(context).go('/login');
+                var res = await Auth.signOut();
+                if (res) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text(
+                      "Vous avez été déconnecté.",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    duration: const Duration(seconds: 3),
+                    backgroundColor: Colors.blue[400],
+                  ));
+                  GoRouter.of(context).go('/login');
+                  return;
+                }
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text(
+                    "Erreur déconnections.",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 3),
+                ));
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red[600])
+                backgroundColor: MaterialStateProperty.all(Colors.red[600]),
+                foregroundColor: MaterialStateProperty.all(Colors.red[600]),
+                padding: MaterialStateProperty.all(const EdgeInsets.all(12)),
               ),
-              child: const Text(
+              icon: const Icon(Icons.power_settings_new, color: Colors.white),
+              label: const Text(
                 "Se déconnecter",
                 style: TextStyle(color: Colors.white),
               ),

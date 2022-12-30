@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 import '../models/profile_user.dart';
 
@@ -58,8 +59,15 @@ class Auth {
     return reponse;
   }
 
-  static Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
+  static Future<bool> signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      profilUser = null;
+      return true;
+    } on Exception catch (e) {
+      if (kDebugMode) { print(e); }
+      return false;
+    }
   }
 
   static Future<User?> refresh(User user) async {

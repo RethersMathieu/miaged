@@ -12,17 +12,16 @@ class ScaffoldWithBottomNavBar extends StatefulWidget {
   final List<ScaffoldWithNavBarTabItem> items;
 
   @override
-  State<ScaffoldWithBottomNavBar> createState() => _ScaffoldWithBottomNavBarState(items: this.items);
+  State<ScaffoldWithBottomNavBar> createState() => _ScaffoldWithBottomNavBarState();
 }
 
 class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
-  final List<ScaffoldWithNavBarTabItem> items;
-  _ScaffoldWithBottomNavBarState({ required this.items });
+  _ScaffoldWithBottomNavBarState();
 
   int get _currentIndex => _locationToTabIndex(GoRouter.of(context).location);
 
   int _locationToTabIndex(String location) {
-    final index = items.indexWhere((t) => location.startsWith(t.initialLocation));
+    final index = widget.items.indexWhere((t) => location.startsWith(t.initialLocation));
     // if index not found (-1), return 0
     return index < 0 ? 0 : index;
   }
@@ -31,18 +30,24 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
   void _onItemTapped(BuildContext context, int tabIndex) {
     if (tabIndex != _currentIndex) {
       // go to the initial location of the selected tab (by index)
-      context.go(items[tabIndex].initialLocation);
+      context.go(widget.items[tabIndex].initialLocation);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    var iconTheme = const IconThemeData(color: Colors.blue);
     return Scaffold(
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        items: items,
+        items: widget.items,
         onTap: (index) => _onItemTapped(context, index),
+        showUnselectedLabels: false,
+        selectedIconTheme: iconTheme,
+        selectedLabelStyle: const TextStyle(color: Colors.blue, fontWeight: FontWeight.w500),
+        unselectedIconTheme: iconTheme,
+        fixedColor: Colors.blue,
       ),
     );
   }

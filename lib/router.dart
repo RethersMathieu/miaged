@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:miaged/pages/add_clothe.dart';
 import 'package:miaged/services/auth.dart';
 import 'package:miaged/pages/clothe_detail.dart';
 import 'package:miaged/pages/log.dart';
@@ -45,20 +46,26 @@ class RouteConfig {
             ]
           ),
           GoRoute(
-              path: '/shapping_cart',
-              pageBuilder: (context, state) => const NoTransitionPage(child: ShappingCart()),
-              redirect: redirectionToLog,
-              routes: [
-                GoRoute(
-                  path: 'clothe/:id',
-                  builder: (context, state) => ClotheDetail(id: state.params['id'] ?? ''),
-                )
-              ]
+            path: '/shapping_cart',
+            pageBuilder: (context, state) => const NoTransitionPage(child: ShappingCart()),
+            redirect: redirectionToLog,
+            routes: [
+              GoRoute(
+                path: 'clothe/:id',
+                builder: (context, state) => ClotheDetail(id: state.params['id'] ?? ''),
+              )
+            ]
           ),
           GoRoute(
-              path: '/profil',
-              pageBuilder: (context, state) => NoTransitionPage(child: Profil()),
-              redirect: redirectionToLog
+            path: '/profil',
+            pageBuilder: (context, state) => NoTransitionPage(child: Profil()),
+            redirect: redirectionToLog,
+            routes: [
+              GoRoute(
+                  path: 'add',
+                  builder: (context, state) => const AddClothe(),
+              ),
+            ]
           )
         ]
       ),

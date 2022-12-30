@@ -23,7 +23,7 @@ class _CardClotheState extends State<CardClothe> {
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: Container(
-          width: (MediaQuery.of(context).size.width/2)-15,
+          width: 150,
           height: 150,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
@@ -47,6 +47,7 @@ class _CardClotheState extends State<CardClothe> {
                 ),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(

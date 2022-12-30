@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:miaged/components/miaged_text_field.dart';
 import 'package:miaged/services/auth.dart';
 import 'package:miaged/models/validators.dart';
 
@@ -9,42 +9,45 @@ class LogIn extends StatefulWidget {
   LogIn({super.key});
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _emailTEC = TextEditingController();
-  final FocusNode _emailFN = FocusNode();
-
-  final TextEditingController _passwordTEC = TextEditingController();
-  final FocusNode _passwordFN = FocusNode();
-
   bool _load = false;
 
   State<StatefulWidget> createState() => _LogInState();
 }
 
 class _LogInState extends State<LogIn> {
+
+
+  String? email;
+  String? password;
+
   _button() {
-    return TextButton(
+    return TextButton.icon(
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
           overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) return Colors.blue.withOpacity(.2);
             if (states.contains(MaterialState.hovered)) return Colors.blue.withOpacity(.04);
-          })
+          }),
+          padding: MaterialStateProperty.all(const EdgeInsets.all(15))
       ),
-      child: const Text("Connecter", style: TextStyle(color: Colors.white, fontSize: 16.0),),
+      icon: const Icon(Icons.power_settings_new_outlined, color: Colors.white),
+      label: const Text("Connecter", style: TextStyle(color: Colors.white, fontSize: 16.0),),
       onPressed: () async {
         if (widget._formKey.currentState!.validate()) {
           widget._load = true;
-          var reponse = await Auth.signIn(email: widget._emailTEC.text, password: widget._passwordTEC.text);
+          var reponse = await Auth.signIn(email: email!, password: password!);
           if (reponse is! User) {
-            Fluttertoast.showToast(
-              msg: "E-mail ou mot de passe incorrect",
-              toastLength: Toast.LENGTH_SHORT,
-              timeInSecForIosWeb: 5,
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                "E-mail ou mot de passe incorrect",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
+                ),
+              ),
               backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0,
-              webShowClose: true,
-            );
+              duration: Duration(seconds: 5),
+            ));
           } else {
             GoRouter.of(context).go('/showcase');
           }
@@ -63,34 +66,20 @@ class _LogInState extends State<LogIn> {
           key: widget._formKey,
           child: Column(
             children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 20.0),
-                child: TextFormField(
-                  controller: widget._emailTEC,
-                  focusNode: widget._emailFN,
-                  validator: (value) => Validators.email(email: value ?? ""),
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.email),
-                    labelText: 'E-mail',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+              MiagedTextField(
+                label: "E-mail",
+                icon: const Icon(Icons.email),
+                validators: const [Validators.email],
+                onChange: (value) => email = value,
               ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 20.0),
-                child: TextFormField(
-                  controller: widget._passwordTEC,
-                  focusNode: widget._passwordFN,
-                  validator: (value) => Validators.password(password: value ?? ""),
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.password),
-                    labelText: 'Mot de passe',
-                    border: OutlineInputBorder(),
-                  ),
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                ),
+              MiagedTextField(
+                label: "Mot de passe",
+                icon: const Icon(Icons.password),
+                validators: const [Validators.password],
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
+                onChange: (value) => password = value,
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 20.0),

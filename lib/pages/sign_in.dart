@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:miaged/components/miaged_text_field.dart';
 
 import '../services/auth.dart';
-import '../models/text_field_miaged.dart';
 import '../models/validators.dart';
 
 class SignIn extends StatelessWidget {
@@ -10,34 +10,66 @@ class SignIn extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  final _loginField = TextFieldMiaged(label: 'Login', validators: [(value) => Validators.email(email: value ?? "")]);
-  final _passwordField = TextFieldMiaged(
-      label: 'Mot de passe',
-      validators: [(value) => Validators.password(password: value ?? "")],
-      obscureText: true,
-      enableSuggestions: false,
-      autocorrect: false
-  );
-  final _adressField = TextFieldMiaged(label: 'Adresse', validators: [(value) => Validators.required(value: value ?? '')]);
-  final _zipcodeField = TextFieldMiaged(label: 'Code postal', validators: [(value) => Validators.required(value: value ?? '')]);
-  final _cityField = TextFieldMiaged(label: 'Ville', validators: [(value) => Validators.required(value: value ?? '')]);
+  String? email;
+  String? password;
+  String? adress;
+  String? zipcode;
+  String? city;
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Création d`\'un compte')),
+      appBar: AppBar(title: const Text('Création d\'un compte')),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              Container(margin: const EdgeInsets.only(bottom: 20), child: _loginField.textFormField),
-              Container(margin: const EdgeInsets.only(bottom: 20), child: _passwordField.textFormField),
-              Container(margin: const EdgeInsets.only(bottom: 20), child: _adressField.textFormField),
-              Container(margin: const EdgeInsets.only(bottom: 20), child: _cityField.textFormField),
-              Container(margin: const EdgeInsets.only(bottom: 20), child: _zipcodeField.textFormField),
+              MiagedTextField(
+                label: "Login",
+                icon: const Icon(Icons.email),
+                validators: const [Validators.email],
+                onSave: (value) => email = value,
+              ),
+              MiagedTextField(
+                label: 'Mot de passe',
+                icon: const Icon(Icons.password),
+                validators: const [Validators.password],
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
+                onSave: (value) => password = value,
+              ),
+              MiagedTextField(
+                label: 'Adresse',
+                icon: const Icon(Icons.location_on),
+                validators: const [Validators.required],
+                onSave: (value) => adress = value,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: MiagedTextField(
+                      label: "Code postal",
+                      icon: const Icon(Icons.local_post_office),
+                      validators: const [Validators.required],
+                      onSave: (value) => zipcode = value,
+                    )
+                  ),
+                  Expanded(
+                      flex: 5,
+                      child: MiagedTextField(
+                        label: "Ville",
+                        icon: const Icon(Icons.location_city),
+                        validators: const [Validators.required],
+                        onSave: (value) => city = value,
+                      )
+                  )
+                ],
+              ),
               Container(
                 margin: const EdgeInsets.only(bottom: 20),
                 child: TextButton(
@@ -52,11 +84,11 @@ class SignIn extends StatelessWidget {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       var reponse = await Auth.register(
-                        email: _loginField.value!,
-                        password: _passwordField.value!,
-                        adress: _adressField.value!,
-                        city: _cityField.value!,
-                        zipcode: _zipcodeField.value!,
+                        email: email!,
+                        password: password!,
+                        adress: adress!,
+                        city: city!,
+                        zipcode: zipcode!,
                       );
                       if (reponse == null) {
                         GoRouter.of(context).go('/login');

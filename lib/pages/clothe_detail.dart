@@ -2,13 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:miaged/components/cart_badge.dart';
+import 'package:miaged/services/cart_service.dart';
 
 import '../models/clothe.dart';
 
 class ClotheDetail extends StatelessWidget {
+  final fontColor = Colors.blue.shade700;
   final String id;
-  const ClotheDetail({super.key, required this.id });
+
+  ClotheDetail({super.key, required this.id });
 
   Widget _initSpinner() {
     return const Center(
@@ -16,99 +18,136 @@ class ClotheDetail extends StatelessWidget {
     );
   }
 
-  Widget _details(BuildContext context, Clothe clothe) {
-    return SafeArea(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 500,
-                child: Image.network(clothe.img, fit: BoxFit.cover,),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                          onPressed: () => context.pop(),
-                          icon: const Icon(Icons.arrow_back, color: Colors.black)
-                      ),
-                      const CartBadge(),
-                    ],
-                  ),
-                )
-              )
-            ],
+  Widget _topDetail(BuildContext context, Clothe clothe) {
+    return Stack(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 10.0),
+          height: MediaQuery.of(context).size.height * .5,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(clothe.img),
+              fit: BoxFit.cover,
+            )
           ),
-          Expanded(
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(width: 1.0, color: Colors.grey),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                    ),
-                ),
-                child: SingleChildScrollView(
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height * .5,
+          padding: const EdgeInsets.all(20.0),
+          width: MediaQuery.of(context).size.width,
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(flex: 5, child: Container()),
+                Expanded(
+                  flex: 5,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                          child: Text(
-                            clothe.name.toUpperCase(),
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25.0,
-                            ),
-                          ),
-                        ),
+                      Text(
+                        clothe.name,
+                          style: TextStyle(
+                            color: fontColor,
+                            fontSize: 35.0,
+                          )
                       ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                          child: Text(
-                            'Taille : ${clothe.size}',
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 18.0,
-                            ),
-                          ),
+                      Container(
+                        padding: const EdgeInsets.all(7.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: fontColor),
+                          borderRadius: BorderRadius.circular(5.0),
                         ),
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                          child: Text(
-                            '${clothe.price}€',
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ),
+                        child: Text("${clothe.price} \€", style: TextStyle(color: fontColor)),
                       )
                     ],
-                  ),
+                  )
                 ),
-              )
-          )
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          left: 8.0,
+          top: 8.0,
+          child: InkWell(
+            onTap: () => GoRouter.of(context).pop(),
+            child: Icon(Icons.arrow_back, color: fontColor),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _bottomDetails(BuildContext context, Clothe clothe) {
+    var textStyle = TextStyle(fontSize: 20.0, color: fontColor);
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text("Taille: ${clothe.size}", style: textStyle),
+          Text("Categorie: ${clothe.category}", style: textStyle),
         ],
       ),
+    );
+  }
+
+  Widget _details(BuildContext context, Clothe clothe) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Column(
+              children: [
+                _topDetail(context, clothe),
+                _bottomDetails(context, clothe),
+              ]
+          ),
+          Positioned(
+            top: MediaQuery.of(context).size.height * .5 - 25,
+            right: 15.0,
+            child: ElevatedButton(
+              onPressed: () async {
+                if (await CartService.addClothe(clothe)) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      "\"${clothe.name}\" Ajouter au panier",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    duration: const Duration(seconds: 3),
+                    backgroundColor: Colors.blue[400],
+                  ));
+                  return;
+                }
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text(
+                    "Erreur d'ajout au panier.",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 3),
+                ));
+              },
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(const CircleBorder()),
+                padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                foregroundColor: MaterialStateProperty.all(Colors.blue),
+              ),
+              child: const Icon(Icons.add, color: Colors.white, size: 50),
+            ),
+          )
+        ],
+      )
     );
   }
 
