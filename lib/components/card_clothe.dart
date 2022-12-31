@@ -55,7 +55,13 @@ class _CardClotheState extends State<CardClothe> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(),
+                        Text(
+                          widget.clothe!.size,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700
+                          )
+                        ),
                         if (widget.onCross != null) ClipOval(
                           child: Material(
                             color: Colors.white, // Button color

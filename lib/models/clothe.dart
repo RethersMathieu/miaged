@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Clothe {
   final String id;
   String img;
@@ -16,6 +18,10 @@ class Clothe {
     price: json['price']! as double,
     category: json['category'] as String,
   );
+
+  static Clothe fromDocumentSnapshot(QueryDocumentSnapshot e) {
+    return Clothe.fromJson(e.id, e.data() as Map<String, dynamic>);
+  }
 
   Map<String, Object?> toJson() {
     return {

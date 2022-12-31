@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:miaged/services/auth.dart';
 
+import '../models/category.dart';
 import '../models/clothe.dart';
 
 class ClotheService {
@@ -21,5 +22,17 @@ class ClotheService {
     } on Exception {
       return false;
     }
+  }
+
+  static Stream<List<Clothe>> snapshotClothes({ List<Category>? categories }) {
+    Query<Map<String, dynamic>> stream = _clothes;
+    if (categories != null && categories.isNotEmpty) {
+      stream = stream.where('category', whereIn: categories.map((e) => e.name).toList());
+    }
+    return stream
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs.map((e) => Clothe.fromDocumentSnapshot(e)).toList();
+        });
   }
 }
