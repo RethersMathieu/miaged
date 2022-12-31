@@ -1,16 +1,21 @@
-# miaged
+<div align="center">
+    <img src="docs/pictures/flutter.png" title="Flutter logo" width="15%"/>
+    <h1>MIAGED</h1>
+</div>
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Introduction
+````console
+flutter doctor
+````
+`````console
+flutter pub get
+`````
+# Sommaire
+- [Packages](#packages)
+# Packages
+- [Firebase](https://firebase.flutter.dev)
+- [GoRouter](https://pub.dev/packages/go_router)
+- [Multi Select Flutter](https://pub.dev/packages/multi_select_flutter)
+- [Async](https://api.dart.dev/stable/2.18.6/dart-async/dart-async-library.html)
+- [Badges](https://pub.dev/packages/badges)
+- [RxDart](https://pub.dev/packages/rxdart)
