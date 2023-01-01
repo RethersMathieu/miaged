@@ -4,9 +4,9 @@ import 'package:miaged/services/category_service.dart';
 import '../models/category.dart';
 
 class DropdownCategories extends StatefulWidget {
-  void Function(Category? category)? onChange;
+  final void Function(Category? category)? onChange;
 
-  DropdownCategories({super.key, this.onChange});
+  const DropdownCategories({super.key, this.onChange});
 
   @override
   State<StatefulWidget> createState() => DropdownCategoriesState();

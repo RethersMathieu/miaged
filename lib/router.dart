@@ -76,7 +76,7 @@ class RouteConfig {
       ),
       GoRoute(
         path: '/register',
-        builder: (context, state) => SignIn(),
+        builder: (context, state) => const SignIn(),
         redirect: redirectionToShowCase
       ),
     ]

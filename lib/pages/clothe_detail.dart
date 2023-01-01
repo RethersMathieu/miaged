@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:miaged/services/cart_service.dart';
@@ -59,7 +58,7 @@ class ClotheDetail extends StatelessWidget {
                           border: Border.all(color: fontColor),
                           borderRadius: BorderRadius.circular(5.0),
                         ),
-                        child: Text("${clothe.price} \€", style: TextStyle(color: fontColor)),
+                        child: Text("${clothe.price} €", style: TextStyle(color: fontColor)),
                       )
                     ],
                   )
@@ -156,9 +155,13 @@ class ClotheDetail extends StatelessWidget {
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
       stream: FirebaseFirestore.instance.collection('clothes').doc(id).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-        if (snapshot.hasError) return Text('Erreur lors du chargement de la page : ${snapshot.error}');
-        else if (snapshot.connectionState == ConnectionState.none) return const Text('Non connecté à la base de donnée.');
-        else if (snapshot.connectionState == ConnectionState.waiting) return _initSpinner();
+        if (snapshot.hasError) {
+          return Text('Erreur lors du chargement de la page : ${snapshot.error}');
+        } else if (snapshot.connectionState == ConnectionState.none) {
+          return const Text('Non connecté à la base de donnée.');
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return _initSpinner();
+        }
         if (snapshot.hasData) {
           var jsonClothe = snapshot.data?.data();
           if (jsonClothe == null) return const Text("Vêtement indosponible");

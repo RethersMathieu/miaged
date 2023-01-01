@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CardClotheEmpty extends StatelessWidget {
+  const CardClotheEmpty({super.key});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

@@ -23,7 +23,7 @@ class _CartBadgeState extends State<CartBadge> {
   Widget build(BuildContext context) {
     if (Auth.profilUser == null) return _iconButton(context);
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-      stream: Auth.profilUser!.shapping_cart_ref.snapshots(),
+      stream: Auth.profilUser!.shappingCartRef.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
         if (snapshot.hasData) {
           var docRefClothes = snapshot.data!.data()!['clothes'];

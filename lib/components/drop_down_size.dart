@@ -5,11 +5,10 @@ import '../models/validators.dart';
 const _options = ['XL', 'L', 'M', 'S', 'XS'];
 
 class DropdownSize extends StatefulWidget {
-  void Function(String?)? onChange;
-  void Function(String?)? onSave;
-  String value = _options[2];
+  final void Function(String?)? onChange;
+  final void Function(String?)? onSave;
 
-  DropdownSize({super.key, this.onChange, this.onSave});
+  const DropdownSize({super.key, this.onChange, this.onSave});
 
   @override
   State<StatefulWidget> createState() => _DropdownSizeState();
@@ -20,7 +19,6 @@ class _DropdownSizeState extends State<DropdownSize> {
 
   @override
   Widget build(BuildContext context) {
-    widget.value = sizeValue;
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: DropdownButtonFormField(

@@ -38,35 +38,35 @@ class Profil extends StatelessWidget {
               ),
             ),
             TextButton.icon(
-              onPressed: () async {
-                var res = await Auth.signOut();
-                if (res) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: const Text(
-                      "Vous avez été déconnecté.",
+              onPressed: () => Auth.signOut((res) {
+                  if (res) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text(
+                        "Vous avez été déconnecté.",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      duration: const Duration(seconds: 3),
+                      backgroundColor: Colors.blue[400],
+                    ));
+                    GoRouter.of(context).go('/login');
+                    return;
+                  }
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text(
+                      "Erreur déconnections.",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.0,
                       ),
                     ),
-                    duration: const Duration(seconds: 3),
-                    backgroundColor: Colors.blue[400],
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 3),
                   ));
-                  GoRouter.of(context).go('/login');
-                  return;
                 }
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text(
-                    "Erreur déconnections.",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  backgroundColor: Colors.red,
-                  duration: Duration(seconds: 3),
-                ));
-              },
+              ),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red[600]),
                 foregroundColor: MaterialStateProperty.all(Colors.red[600]),

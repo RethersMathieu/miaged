@@ -2,45 +2,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfilUser {
-  late String _adress;
-  late String _city;
-  late String _zipcode;
-  late DocumentReference<Map<String, dynamic>> _shapping_cart_ref;
-  late List<dynamic> _clothes_ref;
+  final String adress;
+  final String city;
+  final String zipcode;
+  final DocumentReference<Map<String, dynamic>> shappingCartRef;
+  final List<dynamic> clothesRef;
 
   ProfilUser({
-    required String adress,
-    required String city,
-    required String zipcode,
-    required DocumentReference<Map<String, dynamic>> shapping_cart_ref,
-    required List<dynamic> clothes_ref
-  }) {
-    _adress = adress;
-    _city = city;
-    _zipcode = zipcode;
-    _shapping_cart_ref = shapping_cart_ref;
-    _clothes_ref = clothes_ref;
-  }
+    required this.adress,
+    required this.city,
+    required this.zipcode,
+    required this.shappingCartRef,
+    required this.clothesRef
+  });
 
   ProfilUser.fromJSON(Map<String, Object?> json): this(
     adress: json['adress'] as String,
     city: json['city'] as String,
     zipcode: json['zipcode'] as String,
-    shapping_cart_ref: json['shapping_cart'] as DocumentReference<Map<String, dynamic>>,
-    clothes_ref: json['clothes'] as List<dynamic>,
+    shappingCartRef: json['shapping_cart'] as DocumentReference<Map<String, dynamic>>,
+    clothesRef: json['clothes'] as List<dynamic>,
   );
 
   String? get login => userData?.email;
-
-  String get adress => _adress;
-
-  String get city => _city;
-
-  String get zipcode => _zipcode;
-
-  DocumentReference<Map<String, dynamic>> get shapping_cart_ref => _shapping_cart_ref;
-
-  List<dynamic> get clothes_ref => _clothes_ref;
 
   User? get userData {
     return FirebaseAuth.instance.currentUser;

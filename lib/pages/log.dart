@@ -9,14 +9,12 @@ class LogIn extends StatefulWidget {
   LogIn({super.key});
   final _formKey = GlobalKey<FormState>();
 
-  bool _load = false;
-
+  @override
   State<StatefulWidget> createState() => _LogInState();
 }
 
 class _LogInState extends State<LogIn> {
-
-
+  bool _load = false;
   String? email;
   String? password;
 
@@ -27,30 +25,36 @@ class _LogInState extends State<LogIn> {
           overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) return Colors.blue.withOpacity(.2);
             if (states.contains(MaterialState.hovered)) return Colors.blue.withOpacity(.04);
+            return null;
           }),
           padding: MaterialStateProperty.all(const EdgeInsets.all(15))
       ),
       icon: const Icon(Icons.power_settings_new_outlined, color: Colors.white),
       label: const Text("Connecter", style: TextStyle(color: Colors.white, fontSize: 16.0),),
-      onPressed: () async {
+      onPressed: () {
         if (widget._formKey.currentState!.validate()) {
-          widget._load = true;
-          var reponse = await Auth.signIn(email: email!, password: password!);
-          if (reponse is! User) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text(
-                "E-mail ou mot de passe incorrect",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.0,
-                ),
-              ),
-              backgroundColor: Colors.red,
-              duration: Duration(seconds: 5),
-            ));
-          } else {
-            GoRouter.of(context).go('/showcase');
-          }
+          setState(() => _load = true);
+          Auth.signIn(
+            email: email!,
+            password: password!,
+            callback: (reponse) {
+              if (reponse is! User) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text(
+                    "E-mail ou mot de passe incorrect",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 5),
+                ));
+              } else {
+                GoRouter.of(context).go('/showcase');
+              }
+            }
+          );
         }
       },
     );
@@ -84,7 +88,7 @@ class _LogInState extends State<LogIn> {
               Container(
                 margin: const EdgeInsets.only(bottom: 20.0),
                 child: (() {
-                  if (widget._load) return const CircularProgressIndicator();
+                  if (_load) return const CircularProgressIndicator();
                   return _button();
                 })()
               ),

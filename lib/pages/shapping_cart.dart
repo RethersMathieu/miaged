@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:miaged/services/auth.dart';
@@ -19,7 +18,7 @@ class _SappingCartState extends State<ShappingCart> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   Stream<double> _streamGetPriceTotal() {
-    return Auth.profilUser!.shapping_cart_ref.snapshots()
+    return Auth.profilUser!.shappingCartRef.snapshots()
         .asyncMap((snapshot) {
           List refs = snapshot.data()?['clothes'] ?? [];
           return Future.wait(refs.map((e) => (e as DocumentReference<Map<String, dynamic>>).get()));
@@ -34,33 +33,37 @@ class _SappingCartState extends State<ShappingCart> {
     );
   }
 
-  Future<void> removeClothe(Clothe clothe) async {
-    var sucess = await CartService.removeClothe(clothe);
-    if (sucess) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text(
-          "Suppression réussie",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16.0,
+  void removeClothe(Clothe clothe) {
+    CartService.removeClothe(
+      clothe,
+      callback: (sucess) {
+        if (sucess) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: const Text(
+              "Suppression réussie",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16.0,
+              ),
+            ),
+            duration: const Duration(seconds: 3),
+            backgroundColor: Colors.blue[400],
+          ));
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+            "Erreur suppression.",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16.0,
+            ),
           ),
-        ),
-        duration: const Duration(seconds: 3),
-        backgroundColor: Colors.blue[400],
-      ));
-      return;
-    }
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text(
-        "Erreur suppression.",
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 16.0,
-        ),
-      ),
-      backgroundColor: Colors.red,
-      duration: Duration(seconds: 3),
-    ));
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        ));
+      }
+    );
   }
 
   Widget _initGridView(List<dynamic> docRefClothes) {
@@ -96,8 +99,8 @@ class _SappingCartState extends State<ShappingCart> {
                             child: const Text("Non", style: TextStyle(color: Colors.white))
                           ),
                           TextButton(
-                            onPressed: () async {
-                              await removeClothe(clothe);
+                            onPressed: () {
+                              removeClothe(clothe);
                               Navigator.pop(buildContext, true);
                             },
                             style: ButtonStyle(
@@ -119,11 +122,15 @@ class _SappingCartState extends State<ShappingCart> {
 
   StreamBuilder<DocumentSnapshot<Map<String, dynamic>>> _initStream() {
     return StreamBuilder(
-      stream: Auth.profilUser!.shapping_cart_ref.snapshots(),
+      stream: Auth.profilUser!.shappingCartRef.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-        if (snapshot.hasError) return Text('Erreur lors du panier : ${snapshot.error}');
-        else if (snapshot.connectionState == ConnectionState.none) return const Text('Non connecté à la base de donnée.');
-        else if (snapshot.connectionState == ConnectionState.waiting) return _initSpinner();
+        if (snapshot.hasError) {
+          return Text('Erreur lors du panier : ${snapshot.error}');
+        } else if (snapshot.connectionState == ConnectionState.none) {
+          return const Text('Non connecté à la base de donnée.');
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return _initSpinner();
+        }
         if (snapshot.hasData) {
           var docRefClothes = snapshot.data!.data()!['clothes'];
           if (docRefClothes.length <= 0) return const Text("Panier vide");

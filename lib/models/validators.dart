@@ -37,7 +37,7 @@ class Validators {
   static String? Function(String? value) min(int min) {
     return (String? value) {
       if (value == null || value.length < min) {
-        return 'Longueur de ${min} minimum.';
+        return 'Longueur de $min minimum.';
       }
       return null;
     };
@@ -46,7 +46,7 @@ class Validators {
   static String? Function(String? value) max(int max) {
     return (String? value) {
       if (value == null || value.length > max) {
-        return 'Longueur de ${max} maximum.';
+        return 'Longueur de $max maximum.';
       }
       return null;
     };
@@ -58,7 +58,7 @@ class Validators {
 
   static String? Function(String? value) regex(RegExp regex) {
     return (String? value) {
-      return !regex.hasMatch(value ?? "") ? "\"${value}\" ne corresponds pas au paterne." : null;
+      return !regex.hasMatch(value ?? "") ? "\"$value\" ne corresponds pas au paterne." : null;
     };
   }
 

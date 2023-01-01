@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:miaged/components/card_clothe.dart';
@@ -50,9 +49,13 @@ class _ShowcaseState extends State<Showcase> {
     return StreamBuilder<List<Clothe>>(
       stream: ClotheService.snapshotClothes(categories: _categories),
       builder: (BuildContext context, AsyncSnapshot<List<Clothe>> snapshot) {
-        if (snapshot.hasError) return Text('Erreur lors du chargement des vetements : ${snapshot.error}');
-        else if (snapshot.connectionState == ConnectionState.none) return const Text('Non connecté à la base de donnée.');
-        else if (snapshot.connectionState == ConnectionState.waiting) return _initSpinner();
+        if (snapshot.hasError) {
+          return Text('Erreur lors du chargement des vetements : ${snapshot.error}');
+        } else if (snapshot.connectionState == ConnectionState.none) {
+          return const Text('Non connecté à la base de donnée.');
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return _initSpinner();
+        }
         if (snapshot.hasData) {
           if (snapshot.data!.isEmpty) return const Text("Aucun vêtements disponible");
           return _initGridViewClothes(snapshot.data!);
@@ -100,7 +103,7 @@ class _ShowcaseState extends State<Showcase> {
                     icon: const Icon(Icons.category, color: Colors.white),
                     label: Text(
                       "Catégorie${_categories.isNotEmpty ? "${_categories.length > 1 ? "s" : ""}  (${_categories.length})" : ""}",
-                      style: TextStyle(color: Colors.white)
+                      style: const TextStyle(color: Colors.white)
                     ),
                     style: ButtonStyle(
                       padding: MaterialStateProperty.all(const EdgeInsets.all(10)),

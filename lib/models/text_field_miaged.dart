@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 class TextFieldMiaged {
-  final TextEditingController controller = TextEditingController();
+  late final TextEditingController controller;
   final FocusNode focusNode = FocusNode();
   late final TextFormField textFormField;
 
@@ -18,7 +18,9 @@ class TextFieldMiaged {
     bool? autocorrect,
     void Function(String? value)? onChange,
     void Function(String? value)? onSave,
+    TextEditingController? controller,
   }) {
+    this.controller = controller ?? TextEditingController();
     textFormField = TextFormField(
       controller: controller,
       focusNode: focusNode,
@@ -34,6 +36,7 @@ class TextFieldMiaged {
             return result;
           }
         }
+        return null;
       },
       decoration: InputDecoration(
         labelText: label,
@@ -43,7 +46,7 @@ class TextFieldMiaged {
       onSaved: onSave,
       onChanged: onChange,
     );
-    if (value != null) controller.text = value;
+    if (value != null) this.controller.text = value;
   }
 
   String? get value {
@@ -52,9 +55,6 @@ class TextFieldMiaged {
 }
 
 class MoneyFieldMiaged extends TextFieldMiaged {
-
-  @override
-  final TextEditingController controller = MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ' ');
 
   MoneyFieldMiaged({
     required super.label,
@@ -67,5 +67,5 @@ class MoneyFieldMiaged extends TextFieldMiaged {
     super.autocorrect,
     super.onChange,
     super.onSave,
-  });
+  }) : super(controller: MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ' '));
 }

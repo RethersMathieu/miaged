@@ -15,7 +15,7 @@ class ClotheService {
       if (profil != null) {
         var doc = await _clothes.add(map);
         await _users.doc(profil.userData?.uid).update({ "clothes": FieldValue.arrayUnion([doc]) });
-        profil.clothes_ref.add(doc);
+        profil.clothesRef.add(doc);
         return true;
       }
       return false;

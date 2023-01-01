@@ -5,8 +5,15 @@ import 'package:miaged/components/miaged_text_field.dart';
 import '../services/auth.dart';
 import '../models/validators.dart';
 
-class SignIn extends StatelessWidget {
-  SignIn({super.key});
+class SignIn extends StatefulWidget {
+  const SignIn({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _SignInState();
+
+}
+
+class _SignInState extends State<SignIn> {
 
   final _formKey = GlobalKey<FormState>();
 
@@ -78,21 +85,24 @@ class SignIn extends StatelessWidget {
                       overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
                         if (states.contains(MaterialState.pressed)) return Colors.blue.withOpacity(.2);
                         if (states.contains(MaterialState.hovered)) return Colors.blue.withOpacity(.04);
+                        return null;
                       })
                   ),
                   child: const Text("Créer", style: TextStyle(color: Colors.white, fontSize: 16.0),),
-                  onPressed: () async {
+                  onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      var reponse = await Auth.register(
+                      Auth.register(
                         email: email!,
                         password: password!,
                         adress: adress!,
                         city: city!,
                         zipcode: zipcode!,
+                        callback: (response) {
+                          if (response == null) {
+                            GoRouter.of(context).go('/login');
+                          }
+                        }
                       );
-                      if (reponse == null) {
-                        GoRouter.of(context).go('/login');
-                      }
                     }
                   },
                 ),

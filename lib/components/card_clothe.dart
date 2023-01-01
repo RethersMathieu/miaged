@@ -3,23 +3,17 @@ import 'package:miaged/components/card_clothe_empty.dart';
 
 import '../models/clothe.dart';
 
-class CardClothe extends StatefulWidget {
-  Clothe? clothe;
-  void Function(Clothe? clothe)? onTap;
-  void Function(Clothe clothe)? onCross;
-  CardClothe({ required this.clothe, this.onTap, this.onCross });
-
-  @override
-  State<StatefulWidget> createState() => _CardClotheState();
-}
-
-class _CardClotheState extends State<CardClothe> {
+class CardClothe extends StatelessWidget {
+  final Clothe? clothe;
+  final void Function(Clothe? clothe)? onTap;
+  final void Function(Clothe clothe)? onCross;
+  const CardClothe({super.key, required this.clothe, this.onTap, this.onCross });
 
   @override
   Widget build(BuildContext context) {
-    if (widget.clothe == null) return CardClotheEmpty();
+    if (clothe == null) return const CardClotheEmpty();
     return GestureDetector(
-      onTap: () => { if (widget.onTap != null) widget.onTap!(widget.clothe) },
+      onTap: () => { if (onTap != null) onTap!(clothe) },
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: Container(
@@ -29,7 +23,7 @@ class _CardClotheState extends State<CardClothe> {
             shape: BoxShape.rectangle,
             borderRadius: const BorderRadius.all(Radius.circular(0.0)),
             image: DecorationImage(
-              image: NetworkImage(widget.clothe!.img),
+              image: NetworkImage(clothe!.img),
               fit: BoxFit.cover,
             ),
           ),
@@ -56,18 +50,18 @@ class _CardClotheState extends State<CardClothe> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          widget.clothe!.size,
+                          clothe!.size,
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700
                           )
                         ),
-                        if (widget.onCross != null) ClipOval(
+                        if (onCross != null) ClipOval(
                           child: Material(
                             color: Colors.white, // Button color
                             child: InkWell(
                               splashColor: Colors.red, // Splash color
-                              onTap: () => widget.onCross!(widget.clothe!),
+                              onTap: () => onCross!(clothe!),
                               child: const SizedBox(
                                   width: 20,
                                   height: 20,
@@ -86,12 +80,12 @@ class _CardClotheState extends State<CardClothe> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          '${widget.clothe!.name[0].toUpperCase()}${widget.clothe!.name.substring(1).toLowerCase()}',
+                          '${clothe!.name[0].toUpperCase()}${clothe!.name.substring(1).toLowerCase()}',
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500,color: Colors.white),
                           maxLines: 1,
                         ),
                         Text(
-                          '${widget.clothe!.price.toStringAsFixed(2)}€',
+                          '${clothe!.price.toStringAsFixed(2)}€',
                           style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w200,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/text_field_miaged.dart';
 
 class MiagedTextField extends StatefulWidget {
-  late TextFieldMiaged textfield;
+  late final TextFieldMiaged textfield;
 
   MiagedTextField({
     super.key,

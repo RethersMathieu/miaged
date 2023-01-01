@@ -17,6 +17,7 @@ class Auth {
     required String adress,
     required String city,
     required String zipcode,
+    void Function(dynamic)? callback,
   }) async {
       FirebaseAuth auth = FirebaseAuth.instance;
       FirebaseFirestore store = FirebaseFirestore.instance;
@@ -37,12 +38,14 @@ class Auth {
       } on FirebaseException catch (e) {
         reponse = e;
       }
+      if(callback != null) callback(reponse);
       return reponse;
   }
 
   static Future<dynamic> signIn({
     required String email,
     required String password,
+    void Function(dynamic)? callback,
   }) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     dynamic reponse;
@@ -52,22 +55,28 @@ class Auth {
       if (reponse is User) {
         var doc = await FirebaseFirestore.instance.collection('users').doc(reponse.uid).get();
         if (doc.data() != null) Auth.profilUser = ProfilUser.fromJSON(doc.data()!);
-      } else Auth.profilUser = null;
+      } else {
+        Auth.profilUser = null;
+      }
     } on FirebaseAuthException catch (e) {
       reponse = e;
     }
+    if (callback != null) callback(reponse);
     return reponse;
   }
 
-  static Future<bool> signOut() async {
+  static Future<bool> signOut(void Function(bool)? callback) async {
+    var success = false;
     try {
       await FirebaseAuth.instance.signOut();
       profilUser = null;
-      return true;
+      success = true;
     } on Exception catch (e) {
       if (kDebugMode) { print(e); }
-      return false;
+      success = false;
     }
+    if (callback != null) callback(success);
+    return success;
   }
 
   static Future<User?> refresh(User user) async {

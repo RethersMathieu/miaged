@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 import '../models/clothe.dart';
 import 'auth.dart';
@@ -9,31 +10,37 @@ class CartService {
     final profilUser = Auth.profilUser;
     if (profilUser != null) {
       try {
-        var shapping_cart_ref = profilUser.shapping_cart_ref;
+        var shappingCartRef = profilUser.shappingCartRef;
         var docClotheRef = FirebaseFirestore.instance.collection("clothes").doc(clothe.id);
-        await shapping_cart_ref.update({ "clothes": FieldValue.arrayUnion([docClotheRef]) });
+        await shappingCartRef.update({ "clothes": FieldValue.arrayUnion([docClotheRef]) });
         return true;
       } on Exception catch (e) {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
         return false;
       }
     }
     return false;
   }
 
-  static Future<bool> removeClothe(Clothe clothe) async {
+  static Future<bool> removeClothe(Clothe clothe, { void Function(bool)? callback }) async {
     final profilUser = Auth.profilUser;
+    var success = false;
     if (profilUser != null) {
       try {
-        var shapping_cart_ref = profilUser.shapping_cart_ref;
+        var shappingCartRef = profilUser.shappingCartRef;
         var docClotheRef = FirebaseFirestore.instance.collection("clothes").doc(clothe.id);
-        await shapping_cart_ref.update({ "clothes": FieldValue.arrayRemove([docClotheRef]) });
-        return true;
+        await shappingCartRef.update({ "clothes": FieldValue.arrayRemove([docClotheRef]) });
+        success = true;
       } on Exception catch (e) {
-        print(e);
-        return false;
+        if (kDebugMode) {
+          print(e);
+        }
+        success = false;
       }
     }
-    return false;
+    if (callback != null) callback(success);
+    return success;
   }
 }
