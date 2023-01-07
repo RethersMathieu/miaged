@@ -23,6 +23,39 @@ class _SignInState extends State<SignIn> {
   String? zipcode;
   String? city;
 
+  bool _onLoad = false;
+
+  TextButton _buttonCreate() => TextButton(
+    style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+        overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+          if (states.contains(MaterialState.pressed)) return Colors.blue.withOpacity(.2);
+          if (states.contains(MaterialState.hovered)) return Colors.blue.withOpacity(.04);
+          return null;
+        })
+    ),
+    child: const Text("Créer", style: TextStyle(color: Colors.white, fontSize: 16.0),),
+    onPressed: () {
+      if (_formKey.currentState!.validate()) {
+        setState(() => _onLoad = true);
+        Auth.register(
+            email: email!,
+            password: password!,
+            adress: adress!,
+            city: city!,
+            zipcode: zipcode!,
+            callback: (response) {
+              if (response == null) {
+                GoRouter.of(context).go('/login');
+              }
+            }
+        );
+        setState(() => _onLoad = false);
+      }
+    },
+  );
+
+  final _circularProgress = const CircularProgressIndicator();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +71,7 @@ class _SignInState extends State<SignIn> {
                 label: "Login",
                 icon: const Icon(Icons.email),
                 validators: const [Validators.email],
-                onSave: (value) => email = value,
+                onChange: (value) => email = value,
               ),
               MiagedTextField(
                 label: 'Mot de passe',
@@ -47,13 +80,13 @@ class _SignInState extends State<SignIn> {
                 obscureText: true,
                 enableSuggestions: false,
                 autocorrect: false,
-                onSave: (value) => password = value,
+                onChange: (value) => password = value,
               ),
               MiagedTextField(
                 label: 'Adresse',
                 icon: const Icon(Icons.location_on),
                 validators: const [Validators.required],
-                onSave: (value) => adress = value,
+                onChange: (value) => adress = value,
               ),
               Row(
                 children: [
@@ -63,7 +96,7 @@ class _SignInState extends State<SignIn> {
                       label: "Code postal",
                       icon: const Icon(Icons.local_post_office),
                       validators: const [Validators.required],
-                      onSave: (value) => zipcode = value,
+                      onChange: (value) => zipcode = value,
                     )
                   ),
                   Expanded(
@@ -72,40 +105,14 @@ class _SignInState extends State<SignIn> {
                         label: "Ville",
                         icon: const Icon(Icons.location_city),
                         validators: const [Validators.required],
-                        onSave: (value) => city = value,
+                        onChange: (value) => city = value,
                       )
                   )
                 ],
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 20),
-                child: TextButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                      overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                        if (states.contains(MaterialState.pressed)) return Colors.blue.withOpacity(.2);
-                        if (states.contains(MaterialState.hovered)) return Colors.blue.withOpacity(.04);
-                        return null;
-                      })
-                  ),
-                  child: const Text("Créer", style: TextStyle(color: Colors.white, fontSize: 16.0),),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Auth.register(
-                        email: email!,
-                        password: password!,
-                        adress: adress!,
-                        city: city!,
-                        zipcode: zipcode!,
-                        callback: (response) {
-                          if (response == null) {
-                            GoRouter.of(context).go('/login');
-                          }
-                        }
-                      );
-                    }
-                  },
-                ),
+                child: _onLoad ? _circularProgress : _buttonCreate()
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 20.0),
