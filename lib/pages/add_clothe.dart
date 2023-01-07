@@ -19,7 +19,7 @@ class AddClothe extends StatefulWidget {
 class _AddClotheState extends State<AddClothe> {
   final _formKey = GlobalKey<FormState>();
 
-  Clothe clothe = Clothe(id: "", img: "", name: "", size: "", price: 0, category: "");
+  Clothe clothe = Clothe(id: "", img: "", name: "", size: "", price: 0, category: "", mark: "");
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +77,18 @@ class _AddClotheState extends State<AddClothe> {
                 ),
                 DropdownCategories(
                   onChange: (category) => clothe.category = category?.name ?? "",
+                ),
+                MiagedTextField(
+                  label: "Marque",
+                  validators: const [
+                    Validators.required
+                  ],
+                  onChange: (value) {
+                    clothe.mark = value
+                        ?.split(" ")
+                        .map((e) => '${e[0].toUpperCase()}${e.substring(1).toLowerCase()}')
+                        .join(" ") ?? "";
+                  },
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 10.0),

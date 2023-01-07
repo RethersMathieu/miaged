@@ -7,8 +7,17 @@ class Clothe {
   String size;
   double price;
   String category;
+  String mark;
 
-  Clothe({ required this.id, required this.img, required this.name, required this.size, required this.price, required this.category});
+  Clothe({
+    required this.id,
+    required this.img,
+    required this.name,
+    required this.size,
+    required this.price,
+    required this.category,
+    required this.mark,
+  });
 
   Clothe.fromJson(String id, Map<String, Object?> json): this(
     id: id,
@@ -17,6 +26,7 @@ class Clothe {
     size: json['size']! as String,
     price: json['price']! as double,
     category: json['category'] as String,
+    mark: json['mark'] as String,
   );
 
   static Clothe fromDocumentSnapshot(QueryDocumentSnapshot e) {
@@ -30,11 +40,12 @@ class Clothe {
       'size': size,
       'price': price,
       'category': category,
+      'mark': mark,
     };
   }
 
   @override
   String toString() {
-    return 'Clothe($id, $img, $name, $size, $price, $category)';
+    return 'Clothe($id, $img, $name, $size, $price, $category, $mark)';
   }
 }

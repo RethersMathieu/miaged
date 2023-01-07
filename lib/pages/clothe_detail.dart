@@ -6,7 +6,7 @@ import 'package:miaged/services/cart_service.dart';
 import '../models/clothe.dart';
 
 class ClotheDetail extends StatelessWidget {
-  final fontColor = Colors.blue.shade700;
+  final fontColor = Colors.blue.shade500;
   final String id;
 
   ClotheDetail({super.key, required this.id });
@@ -55,10 +55,10 @@ class ClotheDetail extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(7.0),
                         decoration: BoxDecoration(
-                          border: Border.all(color: fontColor),
+                          border: Border.all(color: fontColor, width: 2.0),
                           borderRadius: BorderRadius.circular(5.0),
                         ),
-                        child: Text("${clothe.price} €", style: TextStyle(color: fontColor)),
+                        child: Text("${clothe.price} €", style: TextStyle(color: fontColor, fontWeight: FontWeight.bold)),
                       )
                     ],
                   )
@@ -90,6 +90,7 @@ class ClotheDetail extends StatelessWidget {
         children: [
           Text("Taille: ${clothe.size}", style: textStyle),
           Text("Categorie: ${clothe.category}", style: textStyle),
+          Text("Marque: ${clothe.mark}", style: textStyle)
         ],
       ),
     );
