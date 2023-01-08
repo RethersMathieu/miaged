@@ -25,7 +25,7 @@ flutter pub get
 - [Le panier](#le-panier)
 - [Ajouter un nouveau vêtement](#ajouter-un-nouveau-vêtement)
 - [Filtrer la liste des vêtements](#filtrer-la-listes-des-vêtements)
-- [Système de routage](#systeme-de-routage)
+- [Système de routage](#système-de-routage)
 # Packages
 * [Firebase](https://firebase.flutter.dev)
 * [GoRouter](https://pub.dev/packages/go_router)
