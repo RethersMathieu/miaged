@@ -28,6 +28,7 @@ class TextFieldMiaged {
       obscureText: obscureText ?? false,
       enableSuggestions: enableSuggestions ?? true,
       autocorrect: autocorrect ?? true,
+      initialValue: value,
       validator: (value) {
         if (validators == null) return null;
         for (var validator in validators) {
@@ -46,7 +47,6 @@ class TextFieldMiaged {
       onSaved: onSave,
       onChanged: onChange,
     );
-    if (value != null) this.controller.text = value;
   }
 
   String? get value {

@@ -55,6 +55,7 @@ class _LogInState extends State<LogIn> {
               }
             }
           );
+          setState(() => _load = false);
         }
       },
     );
