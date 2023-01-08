@@ -10,7 +10,7 @@ Le MVP est la version d’un produit qui permet d’obtenir un maximum de retour
 En parallèle, énormément d’entreprises passent aux méthodologies agiles et la rédaction de User Story.</br>
 Nous allons donc appliquer ce formalisme pour exprimer les différents besoins. Chaque User Story composant le MVP sera préfixé de [MVP] dans son titre.</br>
 
-Afin de lancer le projet correctement veuillez les commandes suivante :
+Afin de lancer le projet correctement veuillez suivre les commandes suivante :
 ````console
 flutter doctor
 ````
